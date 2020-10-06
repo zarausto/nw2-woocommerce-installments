@@ -111,7 +111,7 @@ class FrancoTecnologiaWooCommerceInstallments {
 
   protected static function getPrice($price = null) {
     if ($price === null) {
-      $product = get_product();
+      $product = wc_get_product();
       if ($product->get_price()) {
         $price = $product->get_price();
       }
@@ -206,7 +206,7 @@ class FrancoTecnologiaWooCommerceInstallments {
       woocommerce_template_single_price();
       return;
     }
-    $product = get_product();
+    $product = wc_get_product();
     ?>
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
       <p class="price"><?php echo $product->get_price_html(); ?>
