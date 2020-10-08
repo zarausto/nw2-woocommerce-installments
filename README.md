@@ -70,6 +70,7 @@ Criado inicialmente para ser exibir as opções de parcelamento do PagSeguro. No
 
 ### 1.4.1 ###
 * Implement of maxNumberOfParcels variable
+* Change get_product(deprecated) with wc_get_product
 
 ### 1.4.0 ###
 
