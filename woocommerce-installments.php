@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WooCommerce Installments
- * Plugin URI: https://github.com/AndersonFranco/woocommerce-installments
+ * Plugin Name: NW2 WooCommerce Installments
+ * Plugin URI: https://github.com/zarausto/nw2-woocommerce-installments
  * Description: This plugin appends installments into the product price.
- * Author: Anderson Franco
- * Author URI: http://www.francotecnologia.com/
- * Version: 1.4.0
+ * Author: Fausto Rodrigo Toloi, Anderson Franco
+ * Author URI: https://github.com/zarausto/nw2-woocommerce-installments
+ * Version: 1.4.1
  * License: GPLv2 or later
  */
 

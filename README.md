@@ -1,11 +1,13 @@
 # WooCommerce Installments #
 
-**Contributors:** Anderson Franco  
+**Contributors:** Fausto Rodrigo Toloi, Anderson Franco  
 **Tags:** woocommerce, pagseguro, paypal, payment, parcelamento, installments  
 **Tested with:** WordPress 4.0 and WooCommerce 2.2.4  
-**Stable tag:** 1.4.0  
+**Stable tag:** 1.4.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl.html  
+
+Based on the brilliant work of Anderson Franco.
 
 This plugin appends installments into the product price.
 
@@ -65,6 +67,9 @@ Criado inicialmente para ser exibir as opções de parcelamento do PagSeguro. No
 ```
 
 ## Changelog ##
+
+### 1.4.1 ###
+* Lots of improvements
 
 ### 1.4.0 ###
 
