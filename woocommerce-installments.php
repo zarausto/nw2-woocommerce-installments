@@ -231,6 +231,7 @@ class FrancoTecnologiaWooCommerceInstallments
         </span>
       </p>
       <?php
+<<<<<<< HEAD
       if ($product->product_type != 'variable') {
         echo static::getParceledTable();
       } else {
@@ -239,6 +240,17 @@ class FrancoTecnologiaWooCommerceInstallments
           $productVariation = new WC_Product_Variation($variation['variation_id']);
           $defaultVariation = array_diff($variation['attributes'], $product->get_variation_default_attributes());
           echo static::getParceledTable($productVariation->get_price(), $variation['variation_id'], empty($defaultVariation));
+=======
+        if ($product->get_type() != 'variable') {
+          echo static::getParceledTable();
+        } else {
+          $variationList = $product->get_available_variations();
+          foreach($variationList AS $variation) {
+            $productVariation = new WC_Product_Variation($variation['variation_id']);
+            $defaultVariation = array_diff($variation['attributes'], $product->get_variation_default_attributes());
+            echo static::getParceledTable($productVariation->get_price(), $variation['variation_id'], empty($defaultVariation));
+          }
+>>>>>>> eb7c747aff9d9213fa06f499aec51a4329d86ca8
         }
       }
       ?>
