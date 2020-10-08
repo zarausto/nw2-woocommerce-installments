@@ -72,6 +72,7 @@ Criado inicialmente para ser exibir as opções de parcelamento do PagSeguro. No
 * Implement of maxNumberOfParcels variable
 * Change get_product(deprecated) with wc_get_product
 * $product->product_type => $product->get_type()
+* Implement sufix (static::$language['sufix']) can be used to Interest-free (pt-br: Sem Juros)
 
 ### 1.4.0 ###
 
