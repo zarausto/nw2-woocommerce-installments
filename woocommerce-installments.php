@@ -231,7 +231,7 @@ class FrancoTecnologiaWooCommerceInstallments
         </span>
       </p>
       <?php
-      if ($product->product_type != 'variable') {
+      if ($product->get_type() != 'variable') {
         echo static::getParceledTable();
       } else {
         $variationList = $product->get_available_variations();
