@@ -69,7 +69,7 @@ Criado inicialmente para ser exibir as opções de parcelamento do PagSeguro. No
 ## Changelog ##
 
 ### 1.4.1 ###
-* Lots of improvements
+* Implement of maxNumberOfParcels variable
 
 ### 1.4.0 ###
 

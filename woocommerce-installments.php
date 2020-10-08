@@ -16,6 +16,9 @@ class FrancoTecnologiaWooCommerceInstallments {
 
   // MINIMUM MONTHLY PAYMENT - MUST BE GREATER THAN ZERO:
   protected static $minimumMonthlyPayment = 5;
+  
+  // MAXIMUM NUMBERS OF PARCELS
+  protected static $maxNumberOfParcels = 10;
 
   // NUMBER OF THE COLUMNS OF THE TABLE:
   protected static $numberOfTableColumns = 2;
@@ -45,7 +48,7 @@ class FrancoTecnologiaWooCommerceInstallments {
   );
 
   // USE DICTIONARY LANGUAGE (DEFAULT: ENGLISH)
-  protected static $useDictLanguage = true;
+  protected static $useDictLanguage = false;
 
   // IF $useDictLanguage == false, USE THIS WORDS:
   protected static $language = array(
@@ -95,7 +98,7 @@ class FrancoTecnologiaWooCommerceInstallments {
     $installment  = (int) $installment;
     $result       = new stdClass();
 
-    if ($installment < 1 || $installment > 12) {
+    if ($installment < 1 || $installment > static::$maxNumberOfParcels) {
       $result->price = 0;
       $result->total = 0;
     } else if (static::$useCoefficientTable) {
@@ -121,8 +124,8 @@ class FrancoTecnologiaWooCommerceInstallments {
 
   protected static function getInstallments($price = 0.00) {
     $installments = round($price / static::$minimumMonthlyPayment);
-    if ($installments > 12) {
-      $installments = 12;
+    if ($installments > static::$maxNumberOfParcels) {
+      $installments = static::$maxNumberOfParcels;
     } else if ($installments < 1) {
       $installments = 1;
     }
