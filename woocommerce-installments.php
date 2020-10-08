@@ -57,11 +57,11 @@ class FrancoTecnologiaWooCommerceInstallments
     'or'              => 'ou',
     'Installments'    => 'Parcelas',
     'Amount'          => 'Valor',
-    'Total'          =>  'Total',
+    'Total'           =>  'Total',
     'InStock'         => 'Em estoque',
     'OutOfStock'      => 'Indisponível',
     'cartPageMessage' => 'Pague em at&eacute; %d vezes',
-    'sufix' => 'sem juros'
+    'sufix'           => 'sem juros' // can be empty too
   );
 
   public static function init()
@@ -76,7 +76,7 @@ class FrancoTecnologiaWooCommerceInstallments
         'InStock'         => __('InStock'),
         'OutOfStock'      => __('OutOfStock'),
         'cartPageMessage' => __('NO interest for %d months'),
-        'sufix'           => __('Interest-free')
+        'sufix'           => __('Interest-free') // can be empty too
       );
     }
     add_action('plugins_loaded', array(get_called_class(), 'actions'));
