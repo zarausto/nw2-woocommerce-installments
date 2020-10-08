@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: NW2 WooCommerce Installments
  * Plugin URI: https://github.com/zarausto/nw2-woocommerce-installments
@@ -9,14 +10,15 @@
  * License: GPLv2 or later
  */
 
-class FrancoTecnologiaWooCommerceInstallments {
+class FrancoTecnologiaWooCommerceInstallments
+{
 
   // ONLY PRODUCTS WITH PRICE GREATER THAN OR EQUAL TO:
   protected static $priceGreaterThanOrEqualTo = 0;
 
   // MINIMUM MONTHLY PAYMENT - MUST BE GREATER THAN ZERO:
   protected static $minimumMonthlyPayment = 5;
-  
+
   // MAXIMUM NUMBERS OF PARCELS
   protected static $maxNumberOfParcels = 10;
 
@@ -58,10 +60,12 @@ class FrancoTecnologiaWooCommerceInstallments {
     'Total'          =>  'Total',
     'InStock'         => 'Em estoque',
     'OutOfStock'      => 'Indisponível',
-    'cartPageMessage' => 'Pague em at&eacute; %d vezes'
+    'cartPageMessage' => 'Pague em at&eacute; %d vezes',
+    'sufix' => 'sem juros'
   );
 
-  public static function init() {
+  public static function init()
+  {
     if (static::$useDictLanguage) {
       // Default English words
       static::$language = array(
@@ -71,16 +75,18 @@ class FrancoTecnologiaWooCommerceInstallments {
         'Total'           => __('Total'),
         'InStock'         => __('InStock'),
         'OutOfStock'      => __('OutOfStock'),
-        'cartPageMessage' => __('NO interest for %d months')
+        'cartPageMessage' => __('NO interest for %d months'),
+        'sufix'           => __('Interest-free')
       );
     }
     add_action('plugins_loaded', array(get_called_class(), 'actions'));
   }
 
-  public static function actions() {
+  public static function actions()
+  {
     // Product Page
     remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
-    add_action('woocommerce_single_product_summary', array(get_called_class(), 'actionSingleProduct'), ((static::$addToCartButtonPosition)?30:10));
+    add_action('woocommerce_single_product_summary', array(get_called_class(), 'actionSingleProduct'), ((static::$addToCartButtonPosition) ? 30 : 10));
     // Catalog
     add_action('woocommerce_after_shop_loop_item_title', array(get_called_class(), 'actionLoopItem'), 20);
     // Cart
@@ -93,7 +99,8 @@ class FrancoTecnologiaWooCommerceInstallments {
     add_action('wp_enqueue_scripts', array(get_called_class(), 'js'), 99);
   }
 
-  protected static function calculateInstallment($price = 0.00, $installment = 0) {
+  protected static function calculateInstallment($price = 0.00, $installment = 0)
+  {
     $price        = (float) $price;
     $installment  = (int) $installment;
     $result       = new stdClass();
@@ -112,7 +119,8 @@ class FrancoTecnologiaWooCommerceInstallments {
     return $result;
   }
 
-  protected static function getPrice($price = null) {
+  protected static function getPrice($price = null)
+  {
     if ($price === null) {
       $product = wc_get_product();
       if ($product->get_price()) {
@@ -122,7 +130,8 @@ class FrancoTecnologiaWooCommerceInstallments {
     return $price;
   }
 
-  protected static function getInstallments($price = 0.00) {
+  protected static function getInstallments($price = 0.00)
+  {
     $installments = round($price / static::$minimumMonthlyPayment);
     if ($installments > static::$maxNumberOfParcels) {
       $installments = static::$maxNumberOfParcels;
@@ -132,18 +141,20 @@ class FrancoTecnologiaWooCommerceInstallments {
     return $installments;
   }
 
-  protected static function getParceledValue($price = null) {
+  protected static function getParceledValue($price = null)
+  {
     $price = static::getPrice($price);
     if ($price > 0) {
       $installments = static::getInstallments($price);
       $calc         = static::calculateInstallment($price, $installments);
-      return $installments . 'x ' . wc_price($calc->price);
+      return $installments . 'x ' . wc_price($calc->price) . ' ' . static::$language['sufix'];
     } else {
       return '';
     }
   }
 
-  protected static function getParceledTable($price = null, $variationId = null, $variationDisplay = null) {
+  protected static function getParceledTable($price = null, $variationId = null, $variationDisplay = null)
+  {
     $price = static::getPrice($price);
     if ($price > 0) {
       $installments = static::getInstallments($price);
@@ -152,16 +163,16 @@ class FrancoTecnologiaWooCommerceInstallments {
       $table .= ($variationDisplay === false ? 'style="display:none"' : '');
       $table .= '><thead>';
 
-      $tableColspan = (2 + (static::$showColumnTotal?1:0)) * static::$numberOfTableColumns;
+      $tableColspan = (2 + (static::$showColumnTotal ? 1 : 0)) * static::$numberOfTableColumns;
 
       if (static::$tableHeaderMessage != '') {
         $table .= '<tr><th class="francotecnologia_wc_parcpagseg_table_header_message_tr_th" colspan="'
-                . $tableColspan . '">' . static::$tableHeaderMessage . '</th></tr>';
+          . $tableColspan . '">' . static::$tableHeaderMessage . '</th></tr>';
       }
 
       $table .= '<tr class="francotecnologia_wc_parcpagseg_table_header_tr">';
       $table .= str_repeat('<th>' . static::$language['Installments'] . '</th><th>' . static::$language['Amount'] . '</th>'
-                           . (static::$showColumnTotal ? '<th>' . static::$language['Total'] . '</th>':''), static::$numberOfTableColumns);
+        . (static::$showColumnTotal ? '<th>' . static::$language['Total'] . '</th>' : ''), static::$numberOfTableColumns);
       $table .= '</tr>';
 
       $table .= '</thead><tbody>';
@@ -180,14 +191,14 @@ class FrancoTecnologiaWooCommerceInstallments {
           $table .= '</tr>';
         }
       }
-      if (substr( $table, -5 ) != '</tr>') {
+      if (substr($table, -5) != '</tr>') {
         $table .= '</tr>';
       }
 
       $table .= '</tbody>';
       if (static::$tableFooterMessage != '') {
         $table .= '<tfoot><tr><th class="francotecnologia_wc_parcpagseg_table_footer_message_tr_th" colspan="'
-                . $tableColspan . '">' . static::$tableFooterMessage . '</th></tr></tfoot>';
+          . $tableColspan . '">' . static::$tableFooterMessage . '</th></tr></tfoot>';
       }
       $table .= '</table>';
       return $table;
@@ -196,47 +207,50 @@ class FrancoTecnologiaWooCommerceInstallments {
     }
   }
 
-  public static function actionLoopItem() {
+  public static function actionLoopItem()
+  {
     if (static::getPrice() >= static::$priceGreaterThanOrEqualTo) {
       echo ' <span class="price francotecnologia_wc_parcpagseg_loop_item_price_span">'
-           . (static::getPrice() > 0 ? static::$language['or'] . ' ' : '')
-           . static::getParceledValue() . '</span>';
+        . (static::getPrice() > 0 ? static::$language['or'] . ' ' : '')
+        . static::getParceledValue() . static::$language['sufix'] . '</span>';
     }
   }
 
-  public static function actionSingleProduct() {
+  public static function actionSingleProduct()
+  {
     if (static::getPrice() < static::$priceGreaterThanOrEqualTo) {
       woocommerce_template_single_price();
       return;
     }
     $product = wc_get_product();
-    ?>
+?>
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
       <p class="price"><?php echo $product->get_price_html(); ?>
         <span class="francotecnologia_wc_parcpagseg_single_product_price_span">
-          <?php echo (static::getPrice() > 0 ? static::$language['or'] . ' ' : '') . static::getParceledValue(); ?>
+          <?php echo (static::getPrice() > 0 ? static::$language['or'] . ' ' : '') . static::getParceledValue() . static::$language['sufix']; ?>
         </span>
       </p>
       <?php
-        if ($product->product_type != 'variable') {
-          echo static::getParceledTable();
-        } else {
-          $variationList = $product->get_available_variations();
-          foreach($variationList AS $variation) {
-            $productVariation = new WC_Product_Variation($variation['variation_id']);
-            $defaultVariation = array_diff($variation['attributes'], $product->get_variation_default_attributes());
-            echo static::getParceledTable($productVariation->get_price(), $variation['variation_id'], empty($defaultVariation));
-          }
+      if ($product->product_type != 'variable') {
+        echo static::getParceledTable();
+      } else {
+        $variationList = $product->get_available_variations();
+        foreach ($variationList as $variation) {
+          $productVariation = new WC_Product_Variation($variation['variation_id']);
+          $defaultVariation = array_diff($variation['attributes'], $product->get_variation_default_attributes());
+          echo static::getParceledTable($productVariation->get_price(), $variation['variation_id'], empty($defaultVariation));
         }
+      }
       ?>
       <meta itemprop="price" content="<?php echo $product->get_price(); ?>" />
       <meta itemprop="priceCurrency" content="<?php echo get_woocommerce_currency(); ?>" />
       <link itemprop="availability" href="http://schema.org/<?php echo $product->is_in_stock() ? static::$language['InStock'] : static::$language['OutOfStock']; ?>" />
     </div>
-    <?php
+  <?php
   }
 
-  public static function actionCart() {
+  public static function actionCart()
+  {
     global $woocommerce;
     if ($woocommerce->cart->total < static::$priceGreaterThanOrEqualTo) {
       return;
@@ -246,7 +260,7 @@ class FrancoTecnologiaWooCommerceInstallments {
     } else {
       $installments = 0;
     }
-    if (stripos(static::$language['cartPageMessage'],'%d') !== false) {
+    if (stripos(static::$language['cartPageMessage'], '%d') !== false) {
       if ($installments > 0) {
         $message = sprintf(static::$language['cartPageMessage'], $installments);
       } else {
@@ -255,19 +269,22 @@ class FrancoTecnologiaWooCommerceInstallments {
     } else {
       $message = static::$language['cartPageMessage'];
     }
-    ?>
-    <tr><th colspan="2" class="francotecnologia_wc_parcpagseg_cart_tr_th"><?php echo $message; ?></th></tr>
-    <?php
+  ?>
+    <tr>
+      <th colspan="2" class="francotecnologia_wc_parcpagseg_cart_tr_th"><?php echo $message; ?></th>
+    </tr>
+<?php
   }
 
-  public static function css() {
+  public static function css()
+  {
     wp_enqueue_style('woocommerce-installments', plugins_url('woocommerce-installments.css', __FILE__), array(), '1.0', 'all');
   }
 
-  public static function js() {
+  public static function js()
+  {
     wp_enqueue_script('woocommerce-installments', plugins_url('woocommerce-installments.js', __FILE__), array('jquery', 'wc-add-to-cart-variation'), '1.0', true);
   }
-
 }
 
 FrancoTecnologiaWooCommerceInstallments::init();
