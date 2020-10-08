@@ -212,7 +212,7 @@ class FrancoTecnologiaWooCommerceInstallments
     if (static::getPrice() >= static::$priceGreaterThanOrEqualTo) {
       echo ' <span class="price francotecnologia_wc_parcpagseg_loop_item_price_span">'
         . (static::getPrice() > 0 ? static::$language['or'] . ' ' : '')
-        . static::getParceledValue() . static::$language['sufix'] . '</span>';
+        . static::getParceledValue() . '</span>';
     }
   }
 
@@ -227,7 +227,7 @@ class FrancoTecnologiaWooCommerceInstallments
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
       <p class="price"><?php echo $product->get_price_html(); ?>
         <span class="francotecnologia_wc_parcpagseg_single_product_price_span">
-          <?php echo (static::getPrice() > 0 ? static::$language['or'] . ' ' : '') . static::getParceledValue() . static::$language['sufix']; ?>
+          <?php echo (static::getPrice() > 0 ? static::$language['or'] . ' ' : '') . static::getParceledValue(); ?>
         </span>
       </p>
       <?php
